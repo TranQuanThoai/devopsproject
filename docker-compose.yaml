@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  database:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db' 
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'Admin123'
+      MYSQL_ROOT_PASSWORD: 'Admin123'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - '/home/tha8hc/database_home:/var/lib/mysql'
