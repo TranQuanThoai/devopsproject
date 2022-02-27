@@ -11,22 +11,22 @@ node {
 
     stage('clean') {
         sh "chmod +x mvnw"
-        sh "mvn -ntp clean -P-webapp"
+        sh "./mvnw -ntp clean -P-webapp"
     }
     stage('nohttp') {
-        sh "mvn -ntp checkstyle:check"
+        sh "./mvnw -ntp checkstyle:check"
     }
 
     stage('install tools') {
-        sh "mvn -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm@install-node-and-npm"
+        sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm@install-node-and-npm"
     }
 
     stage('npm install') {
-        sh "mvn -ntp com.github.eirslett:frontend-maven-plugin:npm"
+        sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
     }
     stage('backend tests') {
         try {
-            sh "mvn -ntp verify -P-webapp"
+            sh "./mvnw -ntp verify -P-webapp"
         } catch(err) {
             throw err
         } finally {
@@ -34,18 +34,9 @@ node {
         }
     }
 
-    // stage('frontend tests') {
-    //     try {
-    //         sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test'"
-    //     } catch(err) {
-    //         throw err
-    //     } finally {
-    //         junit '**/target/test-results/TESTS-results-jest.xml'
-    //     }
-    // }
 
     stage('packaging') {
-        sh "mvn -ntp verify -P-webapp -Pprod -DskipTests"
+        sh "./mvnw -ntp verify -P-webapp -Pprod -DskipTests"
         archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
     }
 }
